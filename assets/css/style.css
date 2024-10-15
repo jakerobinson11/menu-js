@@ -6,6 +6,8 @@ ul{
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
+    background-color: black;
+    color: white;
 }
 #header-nav>ul{
     width: 40%;
@@ -14,7 +16,9 @@ ul{
 }
 #brand{
     margin-left: 5%;
+    margin-top: 15px;
 }
 i{
     margin-right: 5%;
+    margin-top: 15px;
 }
