@@ -41,3 +41,4 @@ const menuData = [
         ]
     },
 ]
+export {menuData};
