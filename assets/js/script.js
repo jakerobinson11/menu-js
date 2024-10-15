@@ -5,6 +5,8 @@ console.dir(menuData);
 
 //VARIABLES
 const navHeaderUl = document.querySelector("#header-nav>ul");
+let activeSubMenu = null;  // Track the currently visible submenu
+let activeListItem = null; // Track the currently clicked list item
 //const menuItems = document.createElement("li");
 
 //FUNCTIONS
@@ -20,41 +22,63 @@ appendItems(0); */
     };
 appendItems([0]); */
 
-let activeSubMenu = null;  // Track the currently visible submenu
-let activeListItem = null; // Track the currently clicked list item
+// Function to create a submenu (ul) with its items
+function createSubMenu(menuItems) {
+    const subMenuUl = document.createElement("ul");
+    subMenuUl.classList.add("submenu");
 
-menuData.forEach((menuItem) => {
-    const listItem = document.createElement("li");
-    listItem.textContent = menuItem.title; // Set the title as the li text
-    navHeaderUl.appendChild(listItem); // Append the li to the ul
-
-    // Event listener for each list item
-    listItem.addEventListener("click", () => {
-         // If the same item is clicked and the submenu is active, remove it
-         if (activeListItem === listItem) {
-            if (activeSubMenu) {
-                activeSubMenu.remove();
-                activeSubMenu = null;
-                activeListItem = null; // Reset active list item
-            }
-            return;
-        }
-        // Hide the currently active submenu if there is one
-        if (activeSubMenu) {
-            activeSubMenu.remove();
-        }
-
-        // Create the new submenu (ul) and append it after the clicked item
-        const subMenuUl = document.createElement("ul");
-        subMenuUl.classList.add("submenu"); // Add a class for styling if needed
-        menuItem.sousMenu.forEach(subMenuItem => {
-            const subMenuLi = document.createElement("li");
-            subMenuLi.textContent = subMenuItem;
-            subMenuUl.append(subMenuLi);
-        });
-
-        listItem.append(subMenuUl);  // Append the submenu to the clicked list item
-        activeSubMenu = subMenuUl;  // Set this submenu as active
-        activeListItem = listItem;  // Set this list item as the currently active one
+    menuItems.forEach(subMenuItem => {
+        const subMenuLi = document.createElement("li");
+        subMenuLi.textContent = subMenuItem;
+        subMenuUl.appendChild(subMenuLi);
     });
-});
+
+    return subMenuUl;
+}
+
+// Function to show the submenu for a clicked item
+function showSubMenu(listItem, menuItem) {
+    const subMenuUl = createSubMenu(menuItem.sousMenu);
+    listItem.appendChild(subMenuUl);
+    activeSubMenu = subMenuUl;
+    activeListItem = listItem;
+}
+
+// Function to remove the currently active submenu
+function removeActiveSubMenu() {
+    if (activeSubMenu) {
+        activeSubMenu.remove();
+        activeSubMenu = null;
+        activeListItem = null;
+    }
+}
+
+// Function to handle the click event on a list item
+function handleMenuClick(listItem, menuItem) {
+    // If the clicked item is already active, hide its submenu
+    if (activeListItem === listItem) {
+        removeActiveSubMenu();
+        return;
+    }
+
+    // Remove any currently visible submenu
+    removeActiveSubMenu();
+
+    // Show the submenu for the clicked item
+    showSubMenu(listItem, menuItem);
+}
+
+// Function to create and append all menu items to the DOM
+function createMenu() {
+    menuData.forEach(menuItem => {
+        const listItem = document.createElement("li");
+        listItem.textContent = menuItem.title;
+        navHeaderUl.appendChild(listItem);
+
+        // Attach the event listener to handle clicks on the list item
+        listItem.addEventListener("click", () => handleMenuClick(listItem, menuItem));
+    });
+}
+
+// Initialize the menu creation
+createMenu();
