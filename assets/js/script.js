@@ -7,20 +7,8 @@ console.dir(menuData);
 const navHeaderUl = document.querySelector("#header-nav>ul");
 let activeSubMenu = null;  // Track the currently visible submenu
 let activeListItem = null; // Track the currently clicked list item
-//const menuItems = document.createElement("li");
 
 //FUNCTIONS
-/* function appendItems (i) {
-    navHeaderUl.append(menuItems);
-    menuItems.innerHTML = menuData[i].title;
-    };
-appendItems(0); */
-
-/* function appendItems([i]){
-    navHeaderUl.append(menuItems)
-    menuItems.innerHTML = menuData[i].title;
-    };
-appendItems([0]); */
 
 // Function to create a submenu (ul) with its items
 function createSubMenu(menuItems) {
